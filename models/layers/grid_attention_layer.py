@@ -95,6 +95,8 @@ class _GridAttentionBlockND(nn.Module):
         #  Relu(theta_x + phi_g + bias) -> f = (b, i_c, thw) -> (b, i_c, t/s1, h/s2, w/s3)
         phi_g = F.upsample(self.phi(g), size=theta_x_size[2:], mode=self.upsample_mode)
         f = F.relu(theta_x + phi_g, inplace=True)
+        
+        # YIJIE: Here, the input x is conv4 and g is gating(center) signal. Hence we know that phi is Wg and theta is Wx.
 
         #  psi^T * f -> (b, psi_i_c, t/s1, h/s2, w/s3)
         sigm_psi_f = F.sigmoid(self.psi(f))
